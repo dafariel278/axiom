@@ -1,14 +1,6 @@
 {
   "name": "axiom-intelligence",
   "version": "1.0.0",
-  "description": "AXIOM — AI Newspaper powered by Hermes Agent (Nous Research)",
-  "type": "module",
-  "engines": { "node": ">=20" },
-  "scripts": {
-    "dev": "vercel dev",
-    "deploy": "vercel --prod"
-  },
-  "devDependencies": {
-    "vercel": "^37.0.0"
-  }
+  "description": "AXIOM — AI-Rewritten Newspaper",
+  "private": true
 }
