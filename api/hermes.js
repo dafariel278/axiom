@@ -31,20 +31,20 @@ module.exports = async function handler(req, res) {
         'X-Title': 'AXIOM Intelligence',
       },
       body: JSON.stringify({
-        // Hermes-3 8B free — stable, fast, less rate-limited than 405B
-        model: 'nousresearch/hermes-3-llama-3.1-8b:free',
+        // DeepHermes-3 8B (fast, free) → fallback to Hermes-3 405B (free)
+        // Both confirmed valid on openrouter.ai/nousresearch
+        model: 'nousresearch/deephermes-3-llama-3-8b-preview:free',
+        models: [
+          'nousresearch/deephermes-3-llama-3-8b-preview:free',
+          'nousresearch/hermes-3-llama-3.1-405b:free',
+        ],
+        route: 'fallback',
         messages: system
           ? [{ role: 'system', content: system }, ...messages]
           : messages,
         max_tokens,
         temperature: 0.75,
         top_p: 0.9,
-        // Auto-fallback to 405B if 8B is unavailable
-        route: 'fallback',
-        models: [
-          'nousresearch/hermes-3-llama-3.1-8b:free',
-          'nousresearch/hermes-3-llama-3.1-405b:free',
-        ],
       }),
     });
 
