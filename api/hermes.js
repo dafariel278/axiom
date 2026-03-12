@@ -31,12 +31,13 @@ module.exports = async function handler(req, res) {
         'X-Title': 'AXIOM Intelligence',
       },
       body: JSON.stringify({
-        // DeepHermes-3 8B (fast, free) → fallback to Hermes-3 405B (free)
-        // Both confirmed valid on openrouter.ai/nousresearch
-        model: 'nousresearch/deephermes-3-llama-3-8b-preview:free',
+        // openrouter/free = auto-selects best available free model
+        // Falls back to Hermes-3 405B if available
+        model: 'nousresearch/hermes-2-pro-llama-3-8b',
         models: [
-          'nousresearch/deephermes-3-llama-3-8b-preview:free',
+          'nousresearch/hermes-2-pro-llama-3-8b',
           'nousresearch/hermes-3-llama-3.1-405b:free',
+          'nousresearch/deephermes-3-llama-3-8b-preview:free',
         ],
         route: 'fallback',
         messages: system
