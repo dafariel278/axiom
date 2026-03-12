@@ -428,16 +428,21 @@ Write with gravitas of The Economist, clarity of Reuters.
 Prose only — no bullets. Return ONLY valid JSON when asked, no markdown fences.`;
 
   log('think','Commissioning lead article…');
-  let lead={headline:'Intelligence Unavailable',dek:'The oracle reflects.',body:'<p>No data received.</p>'};
+  const hnTop=stories[0]||{};
+  let lead={
+    headline:hnTop.title||'Top Story',
+    dek:`▲ ${hnTop.score||0} points · ${hnTop.by||'unknown'} · ${ago(Date.now()/1000-(hnTop.time||0))}`,
+    body:`<p>This story is trending at the top of the live intelligence feed with ${hnTop.score||0} engagement signals across the network. AXIOM is monitoring all subsequent developments in real time.</p><p>Filed by <strong>${hnTop.by||'unknown'}</strong> · Source: Hacker News Live Feed</p>`
+  };
   try{
     const raw=await hermes(SYS,`Write AXIOM lead article.Query:"${query}"
 Return ONLY JSON:{"headline":"12 words max","dek":"20 words","body":"<p>~70w</p><p>~70w</p><p>~60w</p>"}
 WEATHER:${wxCtx}
 STORIES:\n${stList}
 ${ctxCtx?`REGION:${ctxCtx}`:''}`,750);
-    lead=safeJSON(raw,lead);
-    if(typeof lead.body==='string')lead.body=lead.body.replace(/\\n/g,'\n');
-  }catch(e){showErr('Lead Article Failed',e.message);}
+    const parsed=safeJSON(raw,null);
+    if(parsed&&parsed.headline){lead=parsed;if(typeof lead.body==='string')lead.body=lead.body.replace(/\\n/g,'\n');}
+  }catch(e){log('err','Lead AI failed, HN fallback active');}
   log('ok',`Lead:"${(lead.headline||'').substring(0,42)}…"`);
 
   log('think','Commissioning secondary articles…');
