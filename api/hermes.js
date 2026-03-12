@@ -31,14 +31,20 @@ module.exports = async function handler(req, res) {
         'X-Title': 'AXIOM Intelligence',
       },
       body: JSON.stringify({
-        // ✅ Hermes-3 405B — FREE tier on OpenRouter, no billing required
-        model: 'nousresearch/hermes-3-llama-3.1-405b:free',
+        // Hermes-3 8B free — stable, fast, less rate-limited than 405B
+        model: 'nousresearch/hermes-3-llama-3.1-8b:free',
         messages: system
           ? [{ role: 'system', content: system }, ...messages]
           : messages,
         max_tokens,
         temperature: 0.75,
         top_p: 0.9,
+        // Auto-fallback to 405B if 8B is unavailable
+        route: 'fallback',
+        models: [
+          'nousresearch/hermes-3-llama-3.1-8b:free',
+          'nousresearch/hermes-3-llama-3.1-405b:free',
+        ],
       }),
     });
 
