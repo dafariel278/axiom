@@ -2,7 +2,7 @@
 // AXIOM Intelligence Engine — secure AI inference proxy
 // API key stays server-side, never exposed to browser
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -30,7 +30,6 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        // ✅ Hermes-3 model — official Nous Research model on Together.ai
         model: 'NousResearch/Hermes-3-Llama-3.1-8B-Turbo',
         messages: system
           ? [{ role: 'system', content: system }, ...messages]
@@ -44,7 +43,7 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       const err = await response.text();
-      console.error('Together.ai error:', err);
+      console.error('Inference error:', err);
       return res.status(response.status).json({ error: err });
     }
 
