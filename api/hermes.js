@@ -27,7 +27,7 @@ module.exports = async function handler(req, res) {
       headers: {
         'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://axiom-intelligence.vercel.app',
+        'HTTP-Referer': 'https://axiom-beta-v1.vercel.app',
         'X-Title': 'AXIOM Intelligence',
       },
       body: JSON.stringify({
@@ -38,9 +38,6 @@ module.exports = async function handler(req, res) {
           'nousresearch/hermes-2-pro-llama-3-8b',
           'nousresearch/hermes-3-llama-3.1-405b:free',
           'nousresearch/deephermes-3-llama-3-8b-preview:free',
-          'meta-llama/llama-3.3-70b-instruct:free',
-          'google/gemma-3-27b-it:free',
-          'mistralai/mistral-7b-instruct:free',
         ],
         route: 'fallback',
         messages: system
