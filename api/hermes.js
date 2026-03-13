@@ -1,5 +1,5 @@
 // api/hermes.js — Vercel Serverless Function
-// AXIOM Intelligence Engine — Nous Portal · Hermes 4
+// AXIOM Intelligence Engine — Nous Research Inference API · Hermes 4
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -20,17 +20,22 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: 'NOUS_API_KEY not configured in Vercel env vars' });
   }
 
+  const SYS_REASONING = `You are a deep thinking AI, you may use extremely long chains of thought to deeply consider the problem and deliberate with yourself via systematic reasoning processes to help come to a correct solution prior to answering. You should enclose your thoughts and internal monologue inside <think> </think> tags, and then provide your solution or response to the problem.`;
+
   try {
-    const response = await fetch('https://portal.nousresearch.com/api/v1/chat/completions', {
+    const response = await fetch('https://inference-api.nousresearch.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${NOUS_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'hermes-4-70b',
+        model: 'Hermes-4.3-36B',
         messages: system
-          ? [{ role: 'system', content: system }, ...messages]
+          ? [
+              { role: 'system', content: SYS_REASONING + '\n\n' + system },
+              ...messages
+            ]
           : messages,
         max_tokens,
         temperature: 0.75,
@@ -40,16 +45,18 @@ module.exports = async function handler(req, res) {
 
     if (!response.ok) {
       const err = await response.text();
-      console.error('Nous Portal error:', err);
       return res.status(response.status).json({ error: err });
     }
 
     const data = await response.json();
-    const text = data.choices?.[0]?.message?.content || '';
+
+    // Strip <think>...</think> reasoning tags from output
+    let text = data.choices?.[0]?.message?.content || '';
+    text = text.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+
     return res.status(200).json({ text, model: data.model, usage: data.usage });
 
   } catch (err) {
-    console.error('Handler error:', err);
     return res.status(500).json({ error: err.message });
   }
 }
