@@ -30,7 +30,7 @@ module.exports = async function handler(req, res) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'Hermes-4.3-36B',
+        model: 'Hermes-4-70B',
         messages: system
           ? [
               { role: 'system', content: SYS_REASONING + '\n\n' + system },
