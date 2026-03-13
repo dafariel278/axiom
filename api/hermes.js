@@ -1,6 +1,5 @@
 // api/hermes.js — Vercel Serverless Function
-// AXIOM Intelligence Engine — secure AI inference proxy
-// Uses OpenRouter → nousresearch/hermes-3-llama-3.1-405b:free (truly free, no billing needed)
+// AXIOM Intelligence Engine — Nous Portal · Hermes 4
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -16,30 +15,20 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'messages array required' });
   }
 
-  const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-  if (!OPENROUTER_API_KEY) {
-    return res.status(500).json({ error: 'OPENROUTER_API_KEY not configured in Vercel env vars' });
+  const NOUS_API_KEY = process.env.NOUS_API_KEY;
+  if (!NOUS_API_KEY) {
+    return res.status(500).json({ error: 'NOUS_API_KEY not configured in Vercel env vars' });
   }
 
   try {
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    const response = await fetch('https://portal.nousresearch.com/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+        'Authorization': `Bearer ${NOUS_API_KEY}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://axiom-beta-v1.vercel.app',
-        'X-Title': 'AXIOM Intelligence',
       },
       body: JSON.stringify({
-        // openrouter/free = auto-selects best available free model
-        // Falls back to Hermes-3 405B if available
-        model: 'nousresearch/hermes-2-pro-llama-3-8b',
-        models: [
-          'nousresearch/hermes-2-pro-llama-3-8b',
-          'nousresearch/hermes-3-llama-3.1-405b:free',
-          'nousresearch/deephermes-3-llama-3-8b-preview:free',
-        ],
-        route: 'fallback',
+        model: 'hermes-4-70b',
         messages: system
           ? [{ role: 'system', content: system }, ...messages]
           : messages,
@@ -51,7 +40,7 @@ module.exports = async function handler(req, res) {
 
     if (!response.ok) {
       const err = await response.text();
-      console.error('Inference error:', err);
+      console.error('Nous Portal error:', err);
       return res.status(response.status).json({ error: err });
     }
 
