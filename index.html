@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AXIOM — Intelligence. Rewritten.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
 :root{
   --ink:#0e0c0a;--ink-2:#1a1714;--ink-3:#2b2622;
@@ -302,17 +302,20 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 
 <script>
 /* ══ INTRO ══ */
-window.addEventListener('load',()=>{
+function launchPage(){
   const intro=document.getElementById('intro'),page=document.getElementById('page');
+  if(intro._done)return; intro._done=true;
+  intro.classList.add('exit');
   setTimeout(()=>{
-    intro.classList.add('exit');
-    setTimeout(()=>{
-      intro.style.display='none';
-      page.classList.add('on');
-      observe();
-    },600);
-  },1600);
-});
+    intro.style.display='none';
+    page.classList.add('on');
+    observe();
+  },500);
+}
+// DOMContentLoaded — tidak menunggu font/image
+document.addEventListener('DOMContentLoaded',()=>setTimeout(launchPage,1800));
+// Hard failsafe — 2.5 detik dari script parse
+setTimeout(launchPage,2500);
 
 /* ══ SCROLL PROGRESS ══ */
 window.addEventListener('scroll',()=>{
