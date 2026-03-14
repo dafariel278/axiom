@@ -5,192 +5,157 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AXIOM — Intelligence. Rewritten.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
-:root{
-  --ink:#0e0c0a;--ink-2:#1a1714;--ink-3:#2b2622;
-  --smoke:#f5f0e8;--smoke-2:#ede7d9;--smoke-3:#d8cfbe;
-  --amber:#c8882a;--amber-2:#e8a84a;--amber-pale:#f5e4c0;
-  --red-ink:#8b1a1a;--steel:#4a5568;--steel-l:#718096;--white:#faf8f4;
-  --f-d:'Playfair Display',Georgia,serif;
-  --f-b:'Libre Baskerville',Georgia,serif;
-  --f-m:'DM Mono','Courier New',monospace;
+:root {
+  --ink:#0e0c0a; --ink-2:#1a1714; --ink-3:#2b2622;
+  --smoke:#f5f0e8; --smoke-2:#ede7d9; --smoke-3:#d8cfbe;
+  --amber:#c8882a; --amber-2:#e8a84a; --amber-pale:#f5e4c0;
+  --red-ink:#8b1a1a; --steel:#4a5568; --steel-l:#718096; --white:#faf8f4;
+  --fd:'Playfair Display',Georgia,serif;
+  --fb:'Libre Baskerville',Georgia,serif;
+  --fm:'DM Mono','Courier New',monospace;
   --expo:cubic-bezier(0.19,1,0.22,1);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--smoke);color:var(--ink);font-family:var(--f-b);font-size:16px;line-height:1.6;min-height:100vh;overflow-x:hidden}
-body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:.5}
+body{background:var(--smoke);color:var(--ink);font-family:var(--fb);font-size:16px;line-height:1.6;min-height:100vh;overflow-x:hidden}
 
-/* ══ PAGE ENTER ══ */
-#page{opacity:1;transform:none}
-#page.on{opacity:1;transform:none}
-.mh-top,.mh-center,.mh-nav,.amber-bar{opacity:1;transform:none}
+/* PROGRESS */
+#prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--amber),var(--amber-2));z-index:999;width:0}
 
-
-
-
-
-/* ══ SCROLL PROGRESS ══ */
-#prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--amber),var(--amber-2));z-index:9996;width:0%;transition:width .08s linear}
-
-/* ══ CURSOR ══ */
-#cur{position:fixed;width:10px;height:10px;background:var(--amber);border-radius:50%;pointer-events:none;z-index:9000;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:multiply;display:none}
-#cur-r{position:fixed;width:32px;height:32px;border:1.5px solid var(--amber);border-radius:50%;pointer-events:none;z-index:9000;transform:translate(-50%,-50%);transition:width .4s var(--expo),height .4s var(--expo);opacity:.38;display:none}
-
-/* ══ MASTHEAD ══ */
-.masthead{background:var(--ink);color:var(--smoke);position:relative;overflow:hidden}
-.masthead::before{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(200,136,42,.05),transparent);animation:mshimmer 7s ease-in-out 4s infinite}
-@keyframes mshimmer{0%{left:-100%}100%{left:200%}}
-.mh-top{display:flex;justify-content:space-between;align-items:center;padding:10px 48px;border-bottom:1px solid rgba(245,240,232,.1);font-family:var(--f-m);font-size:.62rem;letter-spacing:.15em;color:rgba(245,240,232,.38)}
+/* MASTHEAD */
+.masthead{background:var(--ink);color:var(--smoke)}
+.mh-top{display:flex;justify-content:space-between;align-items:center;padding:10px 48px;border-bottom:1px solid rgba(255,255,255,.08);font-family:var(--fm);font-size:.62rem;letter-spacing:.15em;color:rgba(245,240,232,.38)}
 .live-badge{display:flex;align-items:center;gap:7px;color:var(--amber-2)}
 .live-dot{width:6px;height:6px;background:var(--amber-2);border-radius:50%;animation:blink 1.4s ease infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.1}}
-.mh-center{text-align:center;padding:44px 48px 28px;border-bottom:1px solid rgba(245,240,232,.1);position:relative;overflow:hidden}
-.eyebrow{font-family:var(--f-m);font-size:.6rem;letter-spacing:.42em;color:var(--amber);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:14px}
-.eyebrow::before,.eyebrow::after{content:'';width:48px;height:1px;background:var(--amber);opacity:.45}
-.logo{font-family:var(--f-d);font-size:clamp(4.5rem,11vw,9.5rem);font-weight:900;letter-spacing:-.02em;line-height:.9;color:var(--white);cursor:pointer;display:inline-block;position:relative;transition:letter-spacing .6s var(--expo)}
-.logo:hover{letter-spacing:.04em}
-.logo::after{content:'AXIOM';position:absolute;inset:0;background:linear-gradient(105deg,transparent 25%,rgba(200,136,42,.3) 50%,transparent 75%);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200%;animation:lshimmer 5s ease-in-out 4s infinite}
-@keyframes lshimmer{0%,100%{background-position:200%}50%{background-position:-200%}}
-.logo-tagline{font-family:var(--f-d);font-size:clamp(.85rem,1.4vw,1.05rem);font-style:italic;color:rgba(245,240,232,.38);letter-spacing:.07em;margin-top:12px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+.mh-center{text-align:center;padding:44px 48px 28px;border-bottom:1px solid rgba(255,255,255,.08)}
+.eyebrow{font-family:var(--fm);font-size:.6rem;letter-spacing:.42em;color:var(--amber);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:14px}
+.eyebrow::before,.eyebrow::after{content:'';width:48px;height:1px;background:var(--amber);opacity:.4}
+.logo{font-family:var(--fd);font-size:clamp(4rem,10vw,9rem);font-weight:900;letter-spacing:-.02em;line-height:.9;color:var(--white)}
+.logo-tagline{font-family:var(--fd);font-size:clamp(.85rem,1.4vw,1.05rem);font-style:italic;color:rgba(245,240,232,.38);letter-spacing:.07em;margin-top:12px}
 .mh-nav{display:flex;justify-content:center;padding:13px 48px}
-.nav-item{font-family:var(--f-m);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(245,240,232,.38);padding:0 22px;border-right:1px solid rgba(245,240,232,.08);cursor:pointer;transition:color .3s,letter-spacing .3s}
+.nav-item{font-family:var(--fm);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(245,240,232,.38);padding:0 22px;border-right:1px solid rgba(255,255,255,.06)}
 .nav-item:last-child{border-right:none}
-.nav-item:hover{color:var(--amber-2);letter-spacing:.28em}
-.amber-bar{background:var(--amber);display:flex;justify-content:space-between;align-items:center;padding:9px 48px;font-family:var(--f-m);font-size:.62rem;letter-spacing:.12em;color:var(--ink)}
+
+/* AMBER BAR */
+.amber-bar{background:var(--amber);display:flex;justify-content:space-between;align-items:center;padding:9px 48px;font-family:var(--fm);font-size:.62rem;letter-spacing:.12em;color:var(--ink)}
 .ed-badge{background:var(--ink);color:var(--amber);padding:2px 10px;font-size:.56rem;letter-spacing:.2em}
 
-/* ══ PAPER ══ */
+/* PAPER */
 .paper{max-width:1380px;margin:0 auto;padding:0 40px 80px}
+
+/* QUERY BLOCK */
 .query-block{padding:40px 0 36px;border-bottom:3px double var(--ink-3)}
-.ql{font-family:var(--f-m);font-size:.6rem;letter-spacing:.28em;color:var(--steel);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.ql{font-family:var(--fm);font-size:.6rem;letter-spacing:.28em;color:var(--steel);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:12px}
 .ql::after{content:'';flex:1;height:1px;background:var(--smoke-3)}
-.q-row{display:grid;grid-template-columns:1fr 190px auto;border:2px solid var(--ink);transition:box-shadow .4s}
-.q-row:focus-within{box-shadow:0 0 0 3px rgba(200,136,42,.18)}
-.q-input{font-family:var(--f-d);font-size:1.1rem;font-style:italic;color:var(--ink);background:var(--white);border:none;padding:16px 22px;outline:none;width:100%}
+.q-row{display:grid;grid-template-columns:1fr 190px auto;border:2px solid var(--ink)}
+.q-row:focus-within{box-shadow:0 0 0 3px rgba(200,136,42,.15)}
+.q-input{font-family:var(--fd);font-size:1.1rem;font-style:italic;color:var(--ink);background:var(--white);border:none;padding:16px 22px;outline:none;width:100%}
 .q-input::placeholder{color:var(--smoke-3)}
 .city-wrap{border-left:2px solid var(--ink)}
-.city-input{font-family:var(--f-m);font-size:.78rem;color:var(--ink);background:var(--smoke-2);border:none;padding:16px 14px;outline:none;width:100%}
-.pub-btn{font-family:var(--f-m);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;background:var(--ink);color:var(--amber-2);border:none;padding:16px 28px;cursor:pointer;white-space:nowrap;border-left:2px solid var(--ink);position:relative;overflow:hidden;transition:letter-spacing .3s}
-.pub-btn::before{content:'';position:absolute;inset:0;background:var(--amber);transform:translateX(-101%);transition:transform .45s var(--expo)}
-.pub-btn:hover:not(:disabled)::before{transform:translateX(0)}
-.pub-btn:hover:not(:disabled){color:var(--ink);letter-spacing:.24em}
-.pub-btn span{position:relative;z-index:1}
-.pub-btn:disabled{opacity:.35;cursor:not-allowed}
+.city-input{font-family:var(--fm);font-size:.78rem;color:var(--ink);background:var(--smoke-2);border:none;padding:16px 14px;outline:none;width:100%}
+.pub-btn{font-family:var(--fm);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;background:var(--ink);color:var(--amber-2);border:none;padding:16px 28px;cursor:pointer;white-space:nowrap;border-left:2px solid var(--ink);transition:background .25s,color .25s}
+.pub-btn:hover:not(:disabled){background:var(--amber);color:var(--ink)}
+.pub-btn:disabled{opacity:.4;cursor:not-allowed}
 .beats{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;align-items:center}
-.beat{font-family:var(--f-m);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);border:1px solid var(--smoke-3);padding:5px 11px;background:transparent;cursor:pointer;transition:all .25s var(--expo)}
-.beat:hover{background:var(--ink);color:var(--amber-2);border-color:var(--ink);transform:translateY(-3px)}
+.beat{font-family:var(--fm);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);border:1px solid var(--smoke-3);padding:5px 11px;background:transparent;cursor:pointer;transition:all .2s}
+.beat:hover{background:var(--ink);color:var(--amber-2);border-color:var(--ink)}
 
-/* ══ TICKER ══ */
-.ticker{background:var(--ink-2);border-left:3px solid var(--amber);padding:14px 22px;margin:22px 0;display:none;overflow:hidden}
-.ticker.on{display:block;animation:tin .4s var(--expo)}
-@keyframes tin{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
-.ticker-hd{font-family:var(--f-m);font-size:.57rem;letter-spacing:.25em;color:var(--amber);margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.tick-rows{display:flex;flex-direction:column;gap:3px;max-height:110px;overflow-y:auto}
-.tick-row{display:flex;gap:14px;font-family:var(--f-m);font-size:.66rem;color:rgba(245,240,232,.55);animation:rin .25s ease}
-@keyframes rin{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
+/* TICKER */
+.ticker{background:var(--ink-2);border-left:3px solid var(--amber);padding:14px 22px;margin:22px 0;display:none}
+.ticker.on{display:block}
+.ticker-hd{font-family:var(--fm);font-size:.57rem;letter-spacing:.25em;color:var(--amber);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.tick-rows{display:flex;flex-direction:column;gap:3px;max-height:130px;overflow-y:auto}
+.tick-row{display:flex;gap:14px;font-family:var(--fm);font-size:.66rem;color:rgba(245,240,232,.55)}
 .t-time{color:rgba(245,240,232,.28);min-width:50px}
 .t-api{color:#64b5f6}.t-ok{color:#81c784}.t-think{color:#ce93d8}.t-err{color:#ef9a9a}
 
-/* ══ SECTION RULE ══ */
+/* SECTION RULE */
 .sec-rule{display:flex;align-items:center;margin:38px 0 24px}
 .sr-l{flex:1;height:2px;background:var(--ink)}
 .sr-r{flex:1;height:1px;background:var(--smoke-3)}
-.sr-t{font-family:var(--f-m);font-size:.6rem;letter-spacing:.32em;text-transform:uppercase;color:var(--ink);padding:0 18px;white-space:nowrap}
+.sr-t{font-family:var(--fm);font-size:.6rem;letter-spacing:.32em;text-transform:uppercase;color:var(--ink);padding:0 18px;white-space:nowrap}
 
-/* ══ FRONT PAGE ══ */
-.front-page{display:grid;grid-template-columns:1fr 1px 1fr 1px 320px;border-top:3px solid var(--ink);border-bottom:1px solid var(--smoke-3);margin-bottom:36px}
+/* FRONT PAGE */
+.front-page{display:grid;grid-template-columns:1fr 1px 1fr 1px 300px;border-top:3px solid var(--ink);margin-bottom:36px}
 .fp-div{background:var(--smoke-3)}
-.fp-lead{padding:30px 30px 30px 0}
-.fp-mid{padding:30px}
-.fp-side{padding:30px 0 30px 30px;border-left:1px solid var(--smoke-3)}
+.fp-lead{padding:28px 28px 28px 0}
+.fp-mid{padding:28px}
+.fp-side{padding:28px 0 28px 28px}
 
-/* ══ ARTICLE ══ */
-.kicker{font-family:var(--f-m);font-size:.56rem;letter-spacing:.28em;text-transform:uppercase;color:var(--amber);margin-bottom:11px;display:flex;align-items:center;gap:8px}
+/* ARTICLE */
+.kicker{font-family:var(--fm);font-size:.56rem;letter-spacing:.28em;text-transform:uppercase;color:var(--amber);margin-bottom:11px;display:flex;align-items:center;gap:8px}
 .kl{width:36px;height:1px;background:var(--amber);opacity:.4}
-.hl{font-family:var(--f-d);font-weight:700;line-height:1.08;color:var(--ink);margin-bottom:10px}
-.hl-xl{font-size:clamp(1.7rem,2.8vw,2.7rem)}
-.hl-lg{font-size:clamp(1.35rem,2.1vw,1.95rem)}
-.hl-md{font-size:1.15rem}.hl-sm{font-size:.98rem}
-.dek{font-family:var(--f-b);font-size:.92rem;font-style:italic;color:var(--steel);margin-bottom:14px;line-height:1.55}
-.byline{font-family:var(--f-m);font-size:.58rem;letter-spacing:.13em;color:var(--steel-l);display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:11px;border-bottom:1px solid var(--smoke-3);text-transform:uppercase}
+.hl{font-family:var(--fd);font-weight:700;line-height:1.08;color:var(--ink);margin-bottom:10px}
+.hl-xl{font-size:clamp(1.6rem,2.6vw,2.6rem)}
+.hl-lg{font-size:clamp(1.2rem,2vw,1.8rem)}
+.hl-md{font-size:1.1rem}.hl-sm{font-size:.95rem}
+.dek{font-family:var(--fb);font-size:.9rem;font-style:italic;color:var(--steel);margin-bottom:14px;line-height:1.55}
+.byline{font-family:var(--fm);font-size:.58rem;letter-spacing:.13em;color:var(--steel-l);display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:11px;border-bottom:1px solid var(--smoke-3);text-transform:uppercase}
 .bb{background:var(--ink);color:var(--amber-2);padding:2px 7px;font-size:.52rem}
-.body-text{font-family:var(--f-b);font-size:.88rem;line-height:1.82;color:var(--ink-3)}
+.body-text{font-family:var(--fb);font-size:.87rem;line-height:1.82;color:var(--ink-3)}
 .body-text p{margin-bottom:11px}
-.body-text p:first-child::first-letter{font-family:var(--f-d);font-size:3.3rem;font-weight:900;float:left;line-height:.8;margin:6px 7px 0 0;color:var(--ink)}
-.art-hr{border:none;border-top:1px solid var(--smoke-3);margin:20px 0}
-.pull{border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);padding:18px 0;margin:20px 0}
-.pull-text{font-family:var(--f-d);font-size:1.25rem;font-style:italic;font-weight:700;color:var(--ink);line-height:1.3}
-.pull-attr{font-family:var(--f-m);font-size:.58rem;letter-spacing:.18em;color:var(--steel-l);margin-top:7px;text-transform:uppercase}
+.body-text p:first-child::first-letter{font-family:var(--fd);font-size:3.2rem;font-weight:900;float:left;line-height:.8;margin:6px 7px 0 0;color:var(--ink)}
+.art-hr{border:none;border-top:1px solid var(--smoke-3);margin:18px 0}
+.pull{border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);padding:16px 0;margin:18px 0}
+.pull-text{font-family:var(--fd);font-size:1.2rem;font-style:italic;font-weight:700;line-height:1.3}
+.pull-attr{font-family:var(--fm);font-size:.58rem;letter-spacing:.18em;color:var(--steel-l);margin-top:7px;text-transform:uppercase}
 
-/* ══ DATA BOX ══ */
-.db{background:var(--ink);color:var(--smoke);padding:18px;margin-bottom:18px;transition:transform .3s var(--expo)}
-.db:hover{transform:translateY(-3px)}
-.db-title{font-family:var(--f-m);font-size:.57rem;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid rgba(245,240,232,.08)}
-.db-stat{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid rgba(245,240,232,.06);font-family:var(--f-m);font-size:.65rem}
+/* DATA BOX */
+.db{background:var(--ink);color:var(--smoke);padding:18px;margin-bottom:16px}
+.db-title{font-family:var(--fm);font-size:.57rem;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid rgba(255,255,255,.07)}
+.db-stat{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);font-family:var(--fm);font-size:.65rem}
 .db-stat:last-child{border-bottom:none}
-.ds-l{color:rgba(245,240,232,.42)}.ds-v{color:var(--smoke)}.ds-v.hi{color:var(--amber-2)}
-.wx-big{text-align:center;padding:14px 0 8px}
-.wx-em{font-size:3.2rem;display:block;margin-bottom:6px;animation:wxf 3s ease-in-out infinite}
-@keyframes wxf{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.wx-temp{font-family:var(--f-d);font-size:2.8rem;font-weight:900;color:var(--smoke);line-height:1}
-.wx-desc{font-family:var(--f-m);font-size:.62rem;color:rgba(245,240,232,.42);letter-spacing:.1em;margin-top:4px}
+.ds-l{color:rgba(245,240,232,.42)}.ds-v{color:var(--smoke)}.hi{color:var(--amber-2)}
+.wx-big{text-align:center;padding:12px 0 8px}
+.wx-em{font-size:3rem;display:block;margin-bottom:4px}
+.wx-temp{font-family:var(--fd);font-size:2.6rem;font-weight:900;line-height:1}
+.wx-desc{font-family:var(--fm);font-size:.62rem;color:rgba(245,240,232,.42);margin-top:4px}
 
-/* ══ SEC GRID ══ */
-.sec-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--smoke-3);border-bottom:1px solid var(--smoke-3);margin-bottom:38px}
-.sec-col{padding:22px;border-right:1px solid var(--smoke-3);cursor:pointer;transition:background .25s,transform .3s var(--expo)}
+/* SECONDARY GRID */
+.sec-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--smoke-3);margin-bottom:38px}
+.sec-col{padding:22px;border-right:1px solid var(--smoke-3)}
 .sec-col:last-child{border-right:none}
-.sec-col:hover{background:rgba(200,136,42,.04);transform:translateY(-3px)}
 
-/* ══ WISDOM ══ */
-.wisdom-band{background:var(--ink-2);padding:30px 48px;margin:0 -40px 38px;text-align:center;position:relative;overflow:hidden}
-.wisdom-band::before{content:'❝';position:absolute;left:44px;top:12px;font-family:var(--f-d);font-size:5.5rem;color:rgba(200,136,42,.12);line-height:1;animation:qf 4s ease-in-out infinite}
-@keyframes qf{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-7px) rotate(-2deg)}}
-.wisdom-text{font-family:var(--f-d);font-size:clamp(1.15rem,2.3vw,1.7rem);font-style:italic;color:var(--smoke);line-height:1.45;max-width:780px;margin:0 auto 10px}
-.wisdom-attr{font-family:var(--f-m);font-size:.62rem;letter-spacing:.24em;color:var(--amber);text-transform:uppercase}
+/* WISDOM */
+.wisdom-band{background:var(--ink-2);padding:28px 48px;margin:0 -40px 36px;text-align:center}
+.wisdom-text{font-family:var(--fd);font-size:clamp(1.1rem,2.2vw,1.6rem);font-style:italic;color:var(--smoke);line-height:1.45;max-width:780px;margin:0 auto 10px}
+.wisdom-attr{font-family:var(--fm);font-size:.62rem;letter-spacing:.24em;color:var(--amber);text-transform:uppercase}
 
-/* ══ BRIEF ══ */
+/* BRIEF */
 .brief-wrap{display:none;margin-bottom:44px}
-.brief-wrap.on{display:block;animation:bin .7s var(--expo)}
-@keyframes bin{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-.brief-head{background:var(--red-ink);color:var(--white);padding:14px 22px;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden}
-.brief-head::after{content:'';position:absolute;top:0;left:-100%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent);animation:bshimmer 3.5s ease-in-out 1s infinite}
-@keyframes bshimmer{0%{left:-100%}100%{left:200%}}
-.brief-title{font-family:var(--f-d);font-size:1.05rem;font-weight:700}
-.brief-tag{font-family:var(--f-m);font-size:.57rem;letter-spacing:.22em;color:rgba(255,255,255,.5);text-transform:uppercase}
-.brief-body{background:var(--amber-pale);border:1px solid var(--amber);border-top:none;padding:26px 30px;font-family:var(--f-b);font-size:.97rem;line-height:1.9;color:var(--ink)}
-.brief-body strong{color:var(--red-ink);font-weight:700}
+.brief-wrap.on{display:block}
+.brief-head{background:var(--red-ink);color:var(--white);padding:14px 22px;display:flex;justify-content:space-between;align-items:center}
+.brief-title{font-family:var(--fd);font-size:1.05rem;font-weight:700}
+.brief-tag{font-family:var(--fm);font-size:.57rem;letter-spacing:.22em;color:rgba(255,255,255,.5);text-transform:uppercase}
+.brief-body{background:var(--amber-pale);border:1px solid var(--amber);border-top:none;padding:26px 30px;font-family:var(--fb);font-size:.97rem;line-height:1.9}
+.brief-body strong{color:var(--red-ink)}
 .api-pills{display:flex;flex-wrap:wrap;gap:6px;padding:12px 30px 18px;background:var(--amber-pale);border:1px solid var(--amber);border-top:none}
-.pill{font-family:var(--f-m);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;border:1px solid currentColor;transition:transform .2s}
-.pill:hover{transform:scale(1.06)}
+.pill{font-family:var(--fm);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;border:1px solid currentColor}
 
-/* ══ ERROR ══ */
-.err-box{background:#fff0f0;border:1px solid #c53030;border-left:4px solid #c53030;padding:20px 24px;margin:20px 0;font-family:var(--f-m);font-size:.78rem;animation:ein .3s var(--expo)}
-@keyframes ein{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
-.err-box strong{color:#c53030;display:block;margin-bottom:6px}
+/* ERROR */
+.err-box{background:#fff0f0;border:1px solid #c53030;border-left:4px solid #c53030;padding:18px 22px;margin:18px 0;font-family:var(--fm);font-size:.78rem}
+.err-box strong{color:#c53030;display:block;margin-bottom:5px}
 
-/* ══ FOOTER ══ */
-.footer{border-top:3px double var(--ink);padding:22px 0;display:flex;justify-content:space-between;align-items:center;font-family:var(--f-m);font-size:.58rem;letter-spacing:.1em;color:var(--steel-l);text-transform:uppercase}
-.footer-logo{font-family:var(--f-d);font-size:1.3rem;font-weight:900;color:var(--ink);transition:letter-spacing .4s var(--expo)}
-.footer-logo:hover{letter-spacing:.04em}
+/* FOOTER */
+.footer{border-top:3px double var(--ink);padding:22px 0;display:flex;justify-content:space-between;align-items:center;font-family:var(--fm);font-size:.58rem;letter-spacing:.1em;color:var(--steel-l);text-transform:uppercase}
+.footer-logo{font-family:var(--fd);font-size:1.3rem;font-weight:900;color:var(--ink)}
 
-/* ══ REVEAL ══ */
-.reveal{opacity:0;transform:translateY(16px)}
-.reveal.in{opacity:1;transform:translateY(0);transition:opacity .7s var(--expo),transform .7s var(--expo)}
-
-/* ══ RESPONSIVE ══ */
+/* RESPONSIVE */
 @media(max-width:900px){
   .paper{padding:0 18px 60px}
   .front-page{grid-template-columns:1fr}
   .fp-div{display:none}
-  .fp-lead,.fp-mid{padding:22px 0;border-bottom:1px solid var(--smoke-3)}
-  .fp-side{padding:22px 0;border-left:none}
+  .fp-lead,.fp-mid{padding:20px 0;border-bottom:1px solid var(--smoke-3)}
+  .fp-side{padding:20px 0}
   .sec-grid{grid-template-columns:1fr}
   .sec-col{border-right:none;border-bottom:1px solid var(--smoke-3)}
-  .wisdom-band{margin:0 -18px 36px;padding:26px 20px}
-  .mh-top,.amber-bar,.mh-nav{padding-left:20px;padding-right:20px}
-  .mh-center{padding:28px 20px 20px}
+  .wisdom-band{margin:0 -18px 36px;padding:24px 18px}
+  .mh-top,.amber-bar,.mh-nav{padding-left:18px;padding-right:18px}
+  .mh-center{padding:28px 18px 18px}
   .q-row{grid-template-columns:1fr}
   .city-wrap,.pub-btn{border-left:none;border-top:2px solid var(--ink)}
   .pub-btn{width:100%;text-align:center}
@@ -200,15 +165,12 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 <body>
 
 <div id="prog"></div>
-<div id="cur"></div>
-<div id="cur-r"></div>
 
-<div id="page">
 <header class="masthead">
   <div class="mh-top">
     <div class="live-badge"><div class="live-dot"></div>LIVE INTELLIGENCE FEED</div>
     <span id="dateStr">—</span>
-    <span>POWERED BY <span style="color:var(--amber-2)">HERMES-2-PRO · NOUSRESEARCH</span></span>
+    <span>POWERED BY <strong style="color:var(--amber-2)">HERMES-4 · NOUSRESEARCH</strong></span>
   </div>
   <div class="mh-center">
     <div class="eyebrow">Real-Time · AI-Written · Powered by Hermes Agent</div>
@@ -224,6 +186,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
     <span class="nav-item">The Brief</span>
   </nav>
 </header>
+
 <div class="amber-bar">
   <span id="fullDate">—</span>
   <div style="display:flex;align-items:center;gap:20px">
@@ -232,309 +195,298 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
     <span id="liveClock">—</span>
   </div>
 </div>
+
 <main class="paper">
   <section class="query-block">
     <div class="ql">Direct the Intelligence Engine</div>
     <div class="q-row">
       <input type="text" class="q-input" id="qInput" placeholder="What does the world need to know today?">
       <div class="city-wrap"><input type="text" class="city-input" id="cityInput" placeholder="Your city" value="Jakarta"></div>
-      <button class="pub-btn" id="pubBtn" onclick="runAxiom()"><span>⌘ PUBLISH EDITION</span></button>
+      <button class="pub-btn" id="pubBtn" onclick="runAxiom()">⌘ PUBLISH EDITION</button>
     </div>
     <div class="beats">
-      <span class="ql" style="font-size:.54rem;margin:0">BEATS:</span>
-      <button class="beat" onclick="setQ(`What are today's most consequential technology breakthroughs?`)">Technology</button>
-      <button class="beat" onclick="setQ(`What is the state of the world's economy today?`)">Economy</button>
-      <button class="beat" onclick="setQ(`What scientific discoveries are reshaping human understanding?`)">Science</button>
-      <button class="beat" onclick="setQ(`What geopolitical tensions should we watch closely?`)">Geopolitics</button>
-      <button class="beat" onclick="setQ(`What is the current state of artificial intelligence development?`)">AI & Future</button>
-      <button class="beat" onclick="setQ(`Give me a complete intelligence briefing for today`)">Full Briefing</button>
+      <span style="font-family:var(--fm);font-size:.54rem;color:var(--steel);letter-spacing:.2em">BEATS:</span>
+      <button class="beat" onclick="setQ('What are today\'s most consequential technology breakthroughs?')">Technology</button>
+      <button class="beat" onclick="setQ('What is the state of the world\'s economy today?')">Economy</button>
+      <button class="beat" onclick="setQ('What scientific discoveries are reshaping human understanding?')">Science</button>
+      <button class="beat" onclick="setQ('What geopolitical tensions should we watch closely?')">Geopolitics</button>
+      <button class="beat" onclick="setQ('What is the current state of artificial intelligence development?')">AI & Future</button>
+      <button class="beat" onclick="setQ('Give me a complete intelligence briefing for today')">Full Briefing</button>
     </div>
   </section>
+
   <div class="ticker" id="ticker">
     <div class="ticker-hd"><div class="live-dot"></div>AXIOM ENGINE · LIVE REASONING LOG</div>
     <div class="tick-rows" id="tickRows"></div>
   </div>
+
   <div id="errArea"></div>
+
   <div class="brief-wrap" id="briefWrap">
     <div class="brief-head">
       <div class="brief-title">The Axiom Intelligence Brief</div>
-      <div class="brief-tag">Synthesized by Hermes-2-Pro · NousResearch</div>
+      <div class="brief-tag">Synthesized by Hermes-4 · NousResearch</div>
     </div>
     <div class="brief-body" id="briefBody"></div>
     <div class="api-pills" id="pillsRow"></div>
   </div>
+
   <div id="frontPage"></div>
   <div id="wisdomBand"></div>
   <div id="secGrid"></div>
+
   <footer class="footer">
     <div class="footer-logo">AXIOM</div>
-    <div style="text-align:center">Powered by <strong>Hermes-2-Pro · NousResearch</strong> via OpenRouter<br>Sources: HackerNews · Open-Meteo · REST Countries · Quotable.io</div>
+    <div style="text-align:center">Powered by <strong>Hermes-4 · NousResearch</strong><br>Sources: HackerNews · Open-Meteo · REST Countries · Quotable.io</div>
     <div>Hermes Agent Hackathon · 2026</div>
   </footer>
 </main>
-</div>
 
 <script>
-/* ══ PAGE INIT ══ */
-document.addEventListener('DOMContentLoaded',()=>{
-  document.getElementById('page').classList.add('on');
-  observe();
-});
-
-/* ══ SCROLL PROGRESS ══ */
+/* SCROLL PROGRESS */
 window.addEventListener('scroll',()=>{
   const s=document.documentElement;
   document.getElementById('prog').style.width=(s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%';
 });
 
-/* ══ REVEAL OBSERVER ══ */
-function observe(){
-  const ob=new IntersectionObserver(entries=>{
-    entries.forEach((e,i)=>{
-      if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),i*70);ob.unobserve(e.target);}
-    });
-  },{threshold:.1});
-  document.querySelectorAll('.reveal').forEach(el=>ob.observe(el));
+/* CLOCK */
+function tick(){
+  const n=new Date();
+  const s=n.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).toUpperCase();
+  document.getElementById('dateStr').textContent=s;
+  document.getElementById('fullDate').textContent=s;
+  document.getElementById('liveClock').textContent=n.toUTCString().split(' ')[4]+' UTC';
 }
+setInterval(tick,1000); tick();
 
-/* ══ CURSOR ══ */
-const C=document.getElementById('cur'),R=document.getElementById('cur-r');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
-(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;C.style.left=mx+'px';C.style.top=my+'px';R.style.left=rx+'px';R.style.top=ry+'px';requestAnimationFrame(a)})();
-document.addEventListener('mouseover',e=>{if(e.target.matches('button,input,a,.beat,.nav-item,.pill,.db')){C.style.width=C.style.height='18px';R.style.width=R.style.height='52px';R.style.opacity='.6';}});
-document.addEventListener('mouseout',e=>{if(e.target.matches('button,input,a,.beat,.nav-item,.pill,.db')){C.style.width=C.style.height='10px';R.style.width=R.style.height='32px';R.style.opacity='.38';}});
+/* HELPERS */
+function setQ(q){ document.getElementById('qInput').value=q; }
 
-/* ══ CLOCK ══ */
-function tick(){const n=new Date();const s=n.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).toUpperCase();document.getElementById('dateStr').textContent=s;document.getElementById('fullDate').textContent=s;document.getElementById('liveClock').textContent=n.toUTCString().split(' ')[4]+' UTC';}
-setInterval(tick,1000);tick();
-
-/* ══ HELPERS ══ */
-function setQ(q){document.getElementById('qInput').value=q;}
 let logT=0;
 function log(type,msg){
-  logT+=Math.random()*350+80;
+  logT+=Math.random()*300+80;
   const t=(logT/1000).toFixed(2)+'s';
   const cls={api:'t-api',ok:'t-ok',think:'t-think',err:'t-err'}[type]||'t-ok';
   const lbl={api:'[FETCH]',ok:'[DATA]',think:'[REASON]',err:'[WARN]'}[type]||'[—]';
-  const row=document.createElement('div');row.className='tick-row';
-  row.innerHTML=`<span class="t-time">${t}</span><span class="${cls}">${lbl}</span><span>${msg}</span>`;
-  const el=document.getElementById('tickRows');el.appendChild(row);el.scrollTop=el.scrollHeight;
+  const row=document.createElement('div');
+  row.className='tick-row';
+  row.innerHTML='<span class="t-time">'+t+'</span><span class="'+cls+'">'+lbl+'</span><span>'+msg+'</span>';
+  const el=document.getElementById('tickRows');
+  el.appendChild(row); el.scrollTop=el.scrollHeight;
 }
-function wCode(c){if(c===0)return{e:'☀️',d:'Clear sky'};if(c<=2)return{e:'⛅',d:'Partly cloudy'};if(c<=3)return{e:'☁️',d:'Overcast'};if(c<=48)return{e:'🌫️',d:'Fog'};if(c<=57)return{e:'🌦️',d:'Drizzle'};if(c<=67)return{e:'🌧️',d:'Rain'};if(c<=77)return{e:'❄️',d:'Snow'};if(c<=82)return{e:'🌦️',d:'Showers'};if(c<=99)return{e:'⛈️',d:'Thunderstorm'};return{e:'🌡️',d:'Unknown'};}
-function ago(s){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60);return h>0?`${h}h ${m}m ago`:m>0?`${m}m ago`:'just now';}
-function showErr(t,d){document.getElementById('errArea').innerHTML=`<div class="err-box"><strong>⚠ ${t}</strong>${d}</div>`;}
 
-/* ══ API FETCHERS ══ */
+function wCode(c){
+  if(c===0)return{e:'☀️',d:'Clear'};if(c<=2)return{e:'⛅',d:'Partly cloudy'};
+  if(c<=3)return{e:'☁️',d:'Overcast'};if(c<=48)return{e:'🌫️',d:'Fog'};
+  if(c<=67)return{e:'🌧️',d:'Rain'};if(c<=77)return{e:'❄️',d:'Snow'};
+  if(c<=99)return{e:'⛈️',d:'Storm'};return{e:'🌡️',d:'Unknown'};
+}
+function ago(s){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60);return h>0?h+'h '+m+'m ago':m>0?m+'m ago':'just now';}
+function showErr(t,d){document.getElementById('errArea').innerHTML='<div class="err-box"><strong>⚠ '+t+'</strong>'+d+'</div>';}
+function safeJSON(raw,fb){
+  try{
+    const clean=raw.replace(/<think>[\s\S]*?<\/think>/g,'').trim();
+    const m=clean.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
+    return m?JSON.parse(m[0]):fb;
+  }catch(e){return fb;}
+}
+
+/* API FETCHERS */
 async function getWeather(city){
-  log('api',`Geocoding "${city}" → open-meteo.com`);
-  const g=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`).then(r=>r.json());
-  if(!g.results?.length)throw new Error(`City not found`);
+  log('api','Geocoding "'+city+'" → open-meteo.com');
+  const g=await fetch('https://geocoding-api.open-meteo.com/v1/search?name='+encodeURIComponent(city)+'&count=1').then(r=>r.json());
+  if(!g.results?.length) throw new Error('City not found');
   const{latitude:lat,longitude:lon,name,country}=g.results[0];
-  log('api',`Fetching weather for ${name}, ${country}`);
-  const w=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,apparent_temperature,weathercode&timezone=auto`).then(r=>r.json());
-  log('ok',`${w.current.temperature_2m}°C · ${wCode(w.current.weathercode).d}`);
-  return{...w.current,name,country,lat,lon};
+  const w=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,apparent_temperature,weathercode&timezone=auto').then(r=>r.json());
+  log('ok',w.current.temperature_2m+'°C · '+wCode(w.current.weathercode).d);
+  return{...w.current,name,country};
 }
 async function getStories(){
   log('api','Fetching HackerNews top stories');
   const ids=await fetch('https://hacker-news.firebaseio.com/v0/topstories.json').then(r=>r.json());
-  log('ok',`${ids.length} stories — fetching top 7`);
-  const top=await Promise.all(ids.slice(0,7).map(id=>fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then(r=>r.json())));
-  log('ok',`Lead: "${top[0]?.title?.substring(0,45)}…"`);
+  const top=await Promise.all(ids.slice(0,7).map(id=>fetch('https://hacker-news.firebaseio.com/v0/item/'+id+'.json').then(r=>r.json())));
+  log('ok',ids.length+' stories indexed');
   return top.filter(Boolean);
 }
 async function getCountry(city){
-  const term=city.split(',').pop().trim()||city;
-  log('api',`REST Countries: "${term}"`);
-  try{const d=await fetch(`https://restcountries.com/v3.1/name/${encodeURIComponent(term)}`).then(r=>r.json());if(!Array.isArray(d)||!d.length)throw new Error();log('ok',`${d[0].name.common} · pop ${(d[0].population/1e6).toFixed(1)}M`);return d[0];}
-  catch{log('err','Country not matched');return null;}
+  const term=city.split(',').pop().trim();
+  try{
+    const d=await fetch('https://restcountries.com/v3.1/name/'+encodeURIComponent(term)).then(r=>r.json());
+    if(!Array.isArray(d)||!d.length) throw new Error();
+    log('ok',d[0].name.common+' · pop '+(d[0].population/1e6).toFixed(1)+'M');
+    return d[0];
+  }catch{log('err','Country not matched');return null;}
 }
 async function getQuote(){
-  log('api','Fetching wisdom from quotable.io');
   const q=await fetch('https://api.quotable.io/random?maxLength=120').then(r=>r.json());
-  log('ok',`Quote by ${q.author}`);return q;
+  log('ok','Quote by '+q.author);
+  return q;
 }
 
-/* ══ AI INFERENCE ══ */
-async function hermes(system,userMsg,max_tokens=750){
-  log('think','Routing to AXIOM Intelligence Engine via secure inference layer…');
-  const res=await fetch('/api/hermes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system,messages:[{role:'user',content:userMsg}],max_tokens})});
-  if(!res.ok){const e=await res.json().catch(()=>({error:res.statusText}));throw new Error(JSON.stringify(e));}
-  const d=await res.json();log('ok',`AI response · ${d.usage?.completion_tokens||'?'} tokens`);return d.text||'';
+/* HERMES AI */
+async function hermes(system,userMsg,max_tokens=700){
+  log('think','Routing to AXIOM Intelligence Engine…');
+  const res=await fetch('/api/hermes',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({system,messages:[{role:'user',content:userMsg}],max_tokens})
+  });
+  if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(JSON.stringify(e.error||e));}
+  const d=await res.json();
+  log('ok','AI response · '+(d.usage?.completion_tokens||'?')+' tokens');
+  return d.text||'';
 }
-function safeJSON(r,fb){try{return JSON.parse(r.replace(/```json|```/g,'').trim());}catch{return fb;}}
 
-/* ══ MAIN ══ */
+/* MAIN */
 async function runAxiom(){
   const query=document.getElementById('qInput').value.trim()||'Give me a complete intelligence briefing for today';
   const city=document.getElementById('cityInput').value.trim()||'Jakarta';
   const btn=document.getElementById('pubBtn');
-  btn.disabled=true;btn.querySelector('span').textContent='⏳ COMPOSING…';
+
+  btn.disabled=true; btn.textContent='⏳ COMPOSING…';
   logT=0;
-  ['tickRows'].forEach(id=>document.getElementById(id).innerHTML='');
+  document.getElementById('tickRows').innerHTML='';
   document.getElementById('ticker').classList.add('on');
   document.getElementById('briefWrap').classList.remove('on');
-  ['frontPage','wisdomBand','secGrid','errArea','pillsRow'].forEach(id=>document.getElementById(id).innerHTML='');
+  document.getElementById('frontPage').innerHTML='';
+  document.getElementById('wisdomBand').innerHTML='';
+  document.getElementById('secGrid').innerHTML='';
+  document.getElementById('errArea').innerHTML='';
+  document.getElementById('pillsRow').innerHTML='';
 
-  log('think',`AXIOM activated — "${query.substring(0,55)}…"`);
-  log('think','Selecting API constellation…');
+  log('think','AXIOM activated — "'+query.substring(0,55)+'…"');
 
   const [wR,sR,cR,qR]=await Promise.allSettled([getWeather(city),getStories(),getCountry(city),getQuote()]);
   const weather=wR.status==='fulfilled'?wR.value:null;
   const stories=sR.status==='fulfilled'?sR.value:[];
   const country=cR.status==='fulfilled'?cR.value:null;
   const quote=qR.status==='fulfilled'?qR.value:null;
-  document.getElementById('storyCount').textContent=`${stories.length} STORIES INDEXED`;
+  document.getElementById('storyCount').textContent=stories.length+' STORIES INDEXED';
 
-  const wxCtx=weather?`${weather.name},${weather.country}:${weather.temperature_2m}°C(feels ${weather.apparent_temperature}°C),${wCode(weather.weathercode).d},humidity ${weather.relative_humidity_2m}%,wind ${weather.wind_speed_10m}km/h`:'unavailable';
-  const stList=stories.slice(0,5).map((s,i)=>`${i+1}."${s.title}"(score:${s.score},${ago(Date.now()/1000-s.time)})`).join('\n');
-  const ctxCtx=country?`${country.name.common}:pop ${(country.population/1e6).toFixed(1)}M,capital ${Object.values(country.capital||{})[0]||'N/A'},${country.subregion||country.region}`:'';
+  const wxCtx=weather?weather.name+', '+weather.country+': '+weather.temperature_2m+'°C, '+wCode(weather.weathercode).d+', humidity '+weather.relative_humidity_2m+'%':'unavailable';
+  const stList=stories.slice(0,5).map((s,i)=>(i+1)+'. "'+s.title+'" (score:'+s.score+', '+ago(Date.now()/1000-s.time)+')').join('\n');
+  const ctxCtx=country?country.name.common+': pop '+(country.population/1e6).toFixed(1)+'M, '+( Object.values(country.capital||{})[0]||''):'';
 
-  const SYS=`You are AXIOM's Chief Intelligence Officer — a world-class AI journalism engine.
-Write with the gravitas of The Economist and clarity of Reuters.
-When asked for JSON: output ONLY the raw JSON object or array. No markdown, no backticks, no explanation before or after.
-When asked for prose: write flowing paragraphs only. No labels, no headers, no JSON.`;
+  const SYS='You are AXIOM Chief Intelligence Officer — world-class AI journalism engine. Write with gravitas of The Economist. When asked for JSON: output ONLY the raw JSON, no markdown, no extra text. When asked for prose: write flowing paragraphs only.';
 
+  /* LEAD ARTICLE */
   log('think','Commissioning lead article…');
   const hnTop=stories[0]||{};
   let lead={
-    headline:hnTop.title||'Top Story',
-    dek:`▲ ${hnTop.score||0} points · ${hnTop.by||'unknown'} · ${ago(Date.now()/1000-(hnTop.time||0))}`,
-    body:`<p>This story is trending at the top of the live intelligence feed with ${hnTop.score||0} engagement signals across the network. AXIOM is monitoring all subsequent developments in real time.</p><p>Filed by <strong>${hnTop.by||'unknown'}</strong> · Source: Hacker News Live Feed</p>`
+    headline:hnTop.title||'Intelligence Unavailable',
+    dek:'▲ '+(hnTop.score||0)+' points · '+(hnTop.by||'unknown')+' · '+ago(Date.now()/1000-(hnTop.time||0)),
+    body:'<p>This story is trending at the top of the live intelligence feed with '+(hnTop.score||0)+' engagement signals. AXIOM is monitoring all developments in real time.</p><p>Filed by <strong>'+(hnTop.by||'unknown')+'</strong> · Source: Hacker News Live Feed</p>'
   };
   try{
     const raw=await hermes(SYS,
-`You must respond with ONLY a JSON object. No text before or after. No markdown.
-Format: {"headline":"string","dek":"string","body":"string"}
+      'Output ONLY a JSON object with keys headline, dek, body. No other text.\n'+
+      'Write a lead newspaper article for AXIOM.\n'+
+      'Query: "'+query+'"\n'+
+      'headline: max 12 words\n'+
+      'dek: max 20 words\n'+
+      'body: 3 HTML paragraphs with <p> tags, ~70 words each\n'+
+      'WEATHER: '+wxCtx+'\n'+
+      'STORIES:\n'+stList+'\n'+
+      (ctxCtx?'REGION: '+ctxCtx:''),
+    700);
+    const parsed=safeJSON(raw,null);
+    if(parsed&&parsed.headline) lead=parsed;
+  }catch(e){log('err','Lead AI fallback to HN: '+e.message);}
+  log('ok','Lead: "'+lead.headline.substring(0,40)+'…"');
 
-Write a lead article for AXIOM newspaper.
-Reader query: "${query}"
-Use this live data:
-WEATHER: ${wxCtx}
-TOP STORIES:
-${stList}
-${ctxCtx?`REGION: ${ctxCtx}`:''}
-
-Rules:
-- headline: max 12 words, present tense, powerful
-- dek: max 20 words, compelling subheadline
-- body: exactly 3 HTML paragraphs using <p> tags, each ~70 words, grounded in the data above`,750);
-    const cleaned=raw.replace(/<think>[\s\S]*?<\/think>/g,'').trim();
-    const jsonMatch=cleaned.match(/\{[\s\S]*\}/);
-    const parsed=jsonMatch?safeJSON(jsonMatch[0],null):null;
-    if(parsed&&parsed.headline){lead=parsed;if(typeof lead.body==='string')lead.body=lead.body.replace(/\n/g,'\n');}
-    else{log('warn','Lead JSON parse failed, using HN fallback');}
-  }catch(e){log('err','Lead AI failed, HN fallback active');}
-  log('ok',`Lead:"${(lead.headline||'').substring(0,42)}…"`);
-
+  /* SECONDARY */
   log('think','Commissioning secondary articles…');
   let sec3=[];
   try{
     const raw2=await hermes(SYS,
-`You must respond with ONLY a JSON array. No text before or after. No markdown.
-Format: [{"kicker":"string","headline":"string","body":"string"},...]
+      'Output ONLY a JSON array of 3 objects with keys kicker, headline, body. No other text.\n'+
+      'Write 3 short secondary newspaper articles.\n'+
+      'kicker: 3 words, headline: 8 words, body: 55 words\n'+
+      'Stories:\n'+stories.slice(1,4).map((s,i)=>(i+1)+'. "'+s.title+'"').join('\n'),
+    600);
+    const parsed=safeJSON(raw2,null);
+    if(Array.isArray(parsed)) sec3=parsed;
+  }catch(e){log('err','Secondary failed: '+e.message);}
 
-Write exactly 3 short secondary newspaper articles for AXIOM.
-Each article covers one story below.
-- kicker: 3 words max
-- headline: 8 words max
-- body: exactly 55 words, one paragraph
-
-Stories to cover:
-${stories.slice(1,4).map((s,i)=>`${i+1}. "${s.title}"`).join('
-')}`,600);
-    const cleaned2=raw2.replace(/<think>[\s\S]*?<\/think>/g,'').trim();
-    const arrMatch=cleaned2.match(/\[[\s\S]*\]/);
-    sec3=arrMatch?safeJSON(arrMatch[0],[]):[];
-  }catch(e){log('err','Secondary failed:'+e.message);}
-
+  /* BRIEF */
   log('think','Synthesizing intelligence brief…');
   let brief='The oracle speaks in silence today.';
   try{
     brief=await hermes(SYS,
-`Write THE AXIOM INTELLIGENCE BRIEF. Respond with prose only — no JSON, no labels, no headers.
-Length: approximately 130 words.
-Topic: "${query}"
-Use <strong> tags for key findings. Use <em> tags for sharp insights.
-Weave together the following data into one cohesive editorial narrative:
-WEATHER: ${wxCtx}
-TOP STORIES:
-${stList}
-${ctxCtx?`CONTEXT: ${ctxCtx}`:''}
-${quote?`WISDOM: "${quote.content}" — ${quote.author}`:''}`,500);
+      'Write THE AXIOM INTELLIGENCE BRIEF. Prose only — no JSON, no labels, no markdown.\n'+
+      'Length: ~130 words. Use <strong> for key findings, <em> for insights.\n'+
+      'Topic: "'+query+'"\n'+
+      'WEATHER: '+wxCtx+'\n'+
+      'STORIES:\n'+stList+'\n'+
+      (ctxCtx?'CONTEXT: '+ctxCtx+'\n':'')+
+      (quote?'WISDOM: "'+quote.content+'" — '+quote.author:''),
+    500);
     brief=brief.replace(/<think>[\s\S]*?<\/think>/g,'').trim();
-  }catch(e){log('err','Brief failed:'+e.message);}
+  }catch(e){log('err','Brief failed: '+e.message);}
 
   /* RENDER */
   const w=weather,wc=w?wCode(w.weathercode):{e:'',d:''};
-  const side=`
-    ${w?`<div class="db reveal"><div class="db-title">Local Conditions · ${w.name}</div>
-      <div class="wx-big"><span class="wx-em">${wc.e}</span><div class="wx-temp">${w.temperature_2m}°C</div><div class="wx-desc">${wc.d} · Feels ${w.apparent_temperature}°C</div></div>
-      <div class="db-stat"><span class="ds-l">Humidity</span><span class="ds-v">${w.relative_humidity_2m}%</span></div>
-      <div class="db-stat"><span class="ds-l">Wind</span><span class="ds-v">${w.wind_speed_10m} km/h</span></div>
-    </div>`:''}
-    ${country?`<div class="db reveal"><div class="db-title">${country.flags?.emoji||''} ${country.name.common}</div>
-      <div class="db-stat"><span class="ds-l">Population</span><span class="ds-v">${(country.population/1e6).toFixed(1)}M</span></div>
-      <div class="db-stat"><span class="ds-l">Capital</span><span class="ds-v">${Object.values(country.capital||{})[0]||'N/A'}</span></div>
-      <div class="db-stat"><span class="ds-l">Region</span><span class="ds-v">${country.subregion||country.region}</span></div>
-      <div class="db-stat"><span class="ds-l">Currency</span><span class="ds-v hi">${Object.values(country.currencies||{})[0]?.symbol||'—'} ${Object.values(country.currencies||{})[0]?.name||''}</span></div>
-    </div>`:''}
-    <div class="db reveal"><div class="db-title">Story Scores · Live</div>
-      ${stories.slice(0,3).map(s=>`<div class="db-stat" style="flex-direction:column;align-items:flex-start;gap:2px;padding:7px 0">
-        <span class="ds-l" style="font-size:.58rem;line-height:1.4">${(s.title||'').substring(0,52)}…</span>
-        <span class="ds-v hi" style="font-size:.58rem">▲ ${s.score} · ${ago(Date.now()/1000-s.time)}</span>
-      </div>`).join('')}
-    </div>`;
+  const side=
+    (w?'<div class="db"><div class="db-title">Local Conditions · '+w.name+'</div>'+
+      '<div class="wx-big"><span class="wx-em">'+wc.e+'</span><div class="wx-temp">'+w.temperature_2m+'°C</div><div class="wx-desc">'+wc.d+' · Feels '+w.apparent_temperature+'°C</div></div>'+
+      '<div class="db-stat"><span class="ds-l">Humidity</span><span class="ds-v">'+w.relative_humidity_2m+'%</span></div>'+
+      '<div class="db-stat"><span class="ds-l">Wind</span><span class="ds-v">'+w.wind_speed_10m+' km/h</span></div>'+
+      '</div>':'')+
+    (country?'<div class="db"><div class="db-title">'+(country.flags?.emoji||'')+' '+country.name.common+'</div>'+
+      '<div class="db-stat"><span class="ds-l">Population</span><span class="ds-v">'+(country.population/1e6).toFixed(1)+'M</span></div>'+
+      '<div class="db-stat"><span class="ds-l">Capital</span><span class="ds-v">'+(Object.values(country.capital||{})[0]||'N/A')+'</span></div>'+
+      '<div class="db-stat"><span class="ds-l">Currency</span><span class="ds-v hi">'+(Object.values(country.currencies||{})[0]?.symbol||'—')+' '+(Object.values(country.currencies||{})[0]?.name||'')+'</span></div>'+
+      '</div>':'')+
+    '<div class="db"><div class="db-title">Story Scores · Live</div>'+
+    stories.slice(0,3).map(s=>'<div class="db-stat" style="flex-direction:column;align-items:flex-start;gap:2px;padding:7px 0"><span class="ds-l" style="font-size:.58rem">'+s.title.substring(0,50)+'…</span><span class="hi" style="font-size:.58rem">▲ '+s.score+' · '+ago(Date.now()/1000-s.time)+'</span></div>').join('')+
+    '</div>';
 
-  document.getElementById('frontPage').innerHTML=`
-    <div class="sec-rule"><div class="sr-l"></div><div class="sr-t">Front Page · Today's Edition</div><div class="sr-r"></div></div>
-    <div class="front-page">
-      <div class="fp-lead reveal">
-        <div class="kicker"><div class="kl"></div>LEAD INTELLIGENCE<div class="kl"></div></div>
-        <h1 class="hl hl-xl">${lead.headline||'—'}</h1>
-        ${lead.dek?`<p class="dek">${lead.dek}</p>`:''}
-        <div class="byline"><span class="bb">AXIOM AI</span><span>Chief Intelligence Officer · AXIOM Editorial Desk</span></div>
-        <div class="body-text">${lead.body||''}</div>
-      </div>
-      <div class="fp-div"></div>
-      <div class="fp-mid reveal">
-        ${stories[1]?`<div class="kicker"><div class="kl"></div>WORLD AFFAIRS<div class="kl"></div></div>
-          <h2 class="hl hl-lg">${stories[1].title||''}</h2>
-          <div class="byline"><span class="bb">LIVE</span><span>${stories[1].by||'unknown'} · ${ago(Date.now()/1000-stories[1].time)}</span></div>
-          <div class="body-text"><p>▲ ${stories[1].score} engagement signals recorded. AXIOM monitoring subsequent developments.</p></div>`:''}
-        ${stories[2]?`<hr class="art-hr">
-          <div class="kicker"><div class="kl"></div>EMERGING<div class="kl"></div></div>
-          <h3 class="hl hl-md">${stories[2].title||''}</h3>
-          <div class="byline"><span class="bb">LIVE</span><span>${ago(Date.now()/1000-stories[2].time)}</span></div>`:''}
-        ${quote?`<div class="pull"><div class="pull-text">${quote.content}</div><div class="pull-attr">— ${quote.author}</div></div>`:''}
-      </div>
-      <div class="fp-div"></div>
-      <div class="fp-side">${side}</div>
-    </div>`;
+  document.getElementById('frontPage').innerHTML=
+    '<div class="sec-rule"><div class="sr-l"></div><div class="sr-t">Front Page · Today\'s Edition</div><div class="sr-r"></div></div>'+
+    '<div class="front-page">'+
+      '<div class="fp-lead">'+
+        '<div class="kicker"><div class="kl"></div>LEAD INTELLIGENCE<div class="kl"></div></div>'+
+        '<h1 class="hl hl-xl">'+lead.headline+'</h1>'+
+        (lead.dek?'<p class="dek">'+lead.dek+'</p>':'')+
+        '<div class="byline"><span class="bb">AXIOM AI</span><span>Chief Intelligence Officer · AXIOM Editorial Desk</span></div>'+
+        '<div class="body-text">'+(lead.body||'')+'</div>'+
+      '</div>'+
+      '<div class="fp-div"></div>'+
+      '<div class="fp-mid">'+
+        (stories[1]?'<div class="kicker"><div class="kl"></div>WORLD AFFAIRS<div class="kl"></div></div>'+
+          '<h2 class="hl hl-lg">'+stories[1].title+'</h2>'+
+          '<div class="byline"><span class="bb">LIVE</span><span>'+(stories[1].by||'unknown')+' · '+ago(Date.now()/1000-stories[1].time)+'</span></div>'+
+          '<div class="body-text"><p>▲ '+stories[1].score+' engagement signals recorded. AXIOM monitoring subsequent developments.</p></div>':'')+
+        (stories[2]?'<hr class="art-hr"><div class="kicker"><div class="kl"></div>EMERGING<div class="kl"></div></div>'+
+          '<h3 class="hl hl-md">'+stories[2].title+'</h3>'+
+          '<div class="byline"><span class="bb">LIVE</span><span>'+ago(Date.now()/1000-stories[2].time)+'</span></div>':'')+
+        (quote?'<div class="pull"><div class="pull-text">'+quote.content+'</div><div class="pull-attr">— '+quote.author+'</div></div>':'')+
+      '</div>'+
+      '<div class="fp-div"></div>'+
+      '<div class="fp-side">'+side+'</div>'+
+    '</div>';
 
-  if(quote)document.getElementById('wisdomBand').innerHTML=`<div class="wisdom-band reveal"><div class="wisdom-text">${quote.content}</div><div class="wisdom-attr">— ${quote.author} · Daily Wisdom</div></div>`;
+  if(quote) document.getElementById('wisdomBand').innerHTML=
+    '<div class="wisdom-band"><div class="wisdom-text">'+quote.content+'</div><div class="wisdom-attr">— '+quote.author+'</div></div>';
 
-  if(sec3.length)document.getElementById('secGrid').innerHTML=`
-    <div class="sec-rule"><div class="sr-l"></div><div class="sr-t">Supporting Intelligence · AXIOM Desk</div><div class="sr-r"></div></div>
-    <div class="sec-grid">${sec3.slice(0,3).map((a,i)=>`
-      <div class="sec-col reveal" style="transition-delay:${i*.1}s">
-        <div class="kicker" style="font-size:.54rem">${a.kicker||'Report'}</div>
-        <h3 class="hl hl-sm">${a.headline||'Update'}</h3>
-        <hr class="art-hr">
-        <div class="body-text" style="font-size:.82rem;line-height:1.72"><p>${a.body||''}</p></div>
-      </div>`).join('')}
-    </div>`;
+  if(sec3.length) document.getElementById('secGrid').innerHTML=
+    '<div class="sec-rule"><div class="sr-l"></div><div class="sr-t">Supporting Intelligence · AXIOM Desk</div><div class="sr-r"></div></div>'+
+    '<div class="sec-grid">'+
+    sec3.slice(0,3).map(a=>
+      '<div class="sec-col"><div class="kicker" style="font-size:.54rem">'+(a.kicker||'Report')+'</div>'+
+      '<h3 class="hl hl-sm">'+(a.headline||'Update')+'</h3>'+
+      '<hr class="art-hr"><div class="body-text" style="font-size:.82rem;line-height:1.72"><p>'+(a.body||'')+'</p></div></div>'
+    ).join('')+'</div>';
 
   document.getElementById('briefBody').innerHTML=brief;
-  [{name:'AXIOM AI ENGINE',c:'#8b1a1a'},{name:'REAL-TIME INFERENCE',c:'#1a365d'},{name:'HACKER NEWS API',c:'#276749'},{name:'OPEN-METEO',c:'#744210'},{name:'REST COUNTRIES',c:'#4a1d96'},{name:'QUOTABLE.IO',c:'#1a4731'}]
-  .forEach(p=>{const s=document.createElement('span');s.className='pill';s.style.color=p.c;s.style.borderColor=p.c+'60';s.textContent=p.name;document.getElementById('pillsRow').appendChild(s);});
+  [{name:'AXIOM AI ENGINE',c:'#8b1a1a'},{name:'HERMES-4 · NOUSRESEARCH',c:'#1a365d'},{name:'HACKER NEWS API',c:'#276749'},{name:'OPEN-METEO',c:'#744210'},{name:'REST COUNTRIES',c:'#4a1d96'},{name:'QUOTABLE.IO',c:'#1a4731'}]
+  .forEach(p=>{const s=document.createElement('span');s.className='pill';s.style.color=p.c;s.style.borderColor=p.c+'55';s.textContent=p.name;document.getElementById('pillsRow').appendChild(s);});
   document.getElementById('briefWrap').classList.add('on');
 
-  observe();
-  log('ok',`✓ AXIOM PUBLISHED — ${sec3.length+1} articles + intelligence brief`);
-  btn.disabled=false;btn.querySelector('span').textContent='⌘ PUBLISH NEW EDITION';
+  log('ok','✓ AXIOM PUBLISHED — '+(sec3.length+1)+' articles + intelligence brief');
+  btn.disabled=false; btn.textContent='⌘ PUBLISH NEW EDITION';
 }
+
 document.getElementById('qInput').addEventListener('keydown',e=>{if(e.key==='Enter')runAxiom();});
 </script>
 </body>
