@@ -22,30 +22,14 @@ html{scroll-behavior:smooth}
 body{background:var(--smoke);color:var(--ink);font-family:var(--f-b);font-size:16px;line-height:1.6;min-height:100vh;overflow-x:hidden;cursor:none}
 body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:.5}
 
-/* ══ CINEMATIC INTRO ══ */
-#intro{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0e0c0a;overflow:hidden}
-#intro::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.012) 2px,rgba(255,255,255,.012) 4px);pointer-events:none;animation:scan 8s linear infinite}
-@keyframes scan{from{background-position:0 0}to{background-position:0 100px}}
-.i-sweep{position:absolute;top:50%;left:-100%;width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--amber),transparent);animation:isweep .7s var(--expo) .1s forwards;opacity:0}
-@keyframes isweep{0%{left:-100%;opacity:1}100%{left:100%;opacity:0}}
-.i-logo{font-family:var(--f-d);font-size:clamp(5rem,18vw,14rem);font-weight:900;letter-spacing:-.02em;line-height:1;background:linear-gradient(135deg,#3d2e14 0%,var(--amber) 40%,var(--amber-2) 60%,#3d2e14 100%);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;animation:ilogo .9s var(--expo) .2s forwards}
-@keyframes ilogo{0%{opacity:0;transform:scale(.82) translateY(24px);letter-spacing:.4em}100%{opacity:1;transform:scale(1) translateY(0);letter-spacing:-.02em}}
-.i-sub{font-family:var(--f-m);font-size:.68rem;letter-spacing:.46em;color:rgba(200,136,42,.55);text-transform:uppercase;margin-top:16px;opacity:0;animation:ifup .5s var(--expo) .8s forwards}
-.i-bar{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--amber),transparent);margin-top:28px;animation:ibar .6s var(--expo) 1s forwards}
-@keyframes ibar{0%{width:0;opacity:0}100%{width:280px;opacity:1}}
-.i-tag{font-family:var(--f-m);font-size:.56rem;letter-spacing:.32em;color:rgba(200,136,42,.35);text-transform:uppercase;margin-top:14px;opacity:0;animation:ifup .4s var(--expo) 1.3s forwards}
-@keyframes ifup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-#intro.exit{animation:iout .9s var(--expo) forwards}
-@keyframes iout{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.05);pointer-events:none}}
-
 /* ══ PAGE ENTER ══ */
-#page{opacity:0;transform:translateY(18px);transition:opacity .9s var(--expo),transform .9s var(--expo)}
-#page.on{opacity:1;transform:translateY(0)}
-.mh-top,.mh-center,.mh-nav,.amber-bar{opacity:0;transform:translateY(-14px);transition:opacity .7s var(--expo),transform .7s var(--expo)}
-#page.on .mh-top{opacity:1;transform:none;transition-delay:.1s}
-#page.on .mh-center{opacity:1;transform:none;transition-delay:.25s}
-#page.on .mh-nav{opacity:1;transform:none;transition-delay:.38s}
-#page.on .amber-bar{opacity:1;transform:none;transition-delay:.5s}
+#page{opacity:1;transform:none}
+#page.on{opacity:1;transform:none}
+.mh-top,.mh-center,.mh-nav,.amber-bar{opacity:1;transform:none}
+
+
+
+
 
 /* ══ SCROLL PROGRESS ══ */
 #prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--amber),var(--amber-2));z-index:9996;width:0%;transition:width .08s linear}
@@ -215,9 +199,6 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 </head>
 <body>
 
-<!-- CINEMATIC INTRO -->
-<div id="intro">
-  <div class="i-sweep"></div>
   <div class="i-logo">AXIOM</div>
   <div class="i-sub">Intelligence · Rewritten</div>
   <div class="i-bar"></div>
@@ -301,21 +282,11 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 </div>
 
 <script>
-/* ══ INTRO ══ */
-function launchPage(){
-  const intro=document.getElementById('intro'),page=document.getElementById('page');
-  if(intro._done)return; intro._done=true;
-  intro.classList.add('exit');
-  setTimeout(()=>{
-    intro.style.display='none';
-    page.classList.add('on');
-    observe();
-  },500);
-}
-// DOMContentLoaded — tidak menunggu font/image
-document.addEventListener('DOMContentLoaded',()=>setTimeout(launchPage,1800));
-// Hard failsafe — 2.5 detik dari script parse
-setTimeout(launchPage,2500);
+/* ══ PAGE INIT ══ */
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('page').classList.add('on');
+  observe();
+});
 
 /* ══ SCROLL PROGRESS ══ */
 window.addEventListener('scroll',()=>{
