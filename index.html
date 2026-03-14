@@ -423,9 +423,10 @@ async function runAxiom(){
   const stList=stories.slice(0,5).map((s,i)=>`${i+1}."${s.title}"(score:${s.score},${ago(Date.now()/1000-s.time)})`).join('\n');
   const ctxCtx=country?`${country.name.common}:pop ${(country.population/1e6).toFixed(1)}M,capital ${Object.values(country.capital||{})[0]||'N/A'},${country.subregion||country.region}`:'';
 
-  const SYS=`You are AXIOM's Chief Intelligence Officer — advanced AI journalism engine.
-Write with gravitas of The Economist, clarity of Reuters.
-Prose only — no bullets. Return ONLY valid JSON when asked, no markdown fences.`;
+  const SYS=`You are AXIOM's Chief Intelligence Officer — a world-class AI journalism engine.
+Write with the gravitas of The Economist and clarity of Reuters.
+When asked for JSON: output ONLY the raw JSON object or array. No markdown, no backticks, no explanation before or after.
+When asked for prose: write flowing paragraphs only. No labels, no headers, no JSON.`;
 
   log('think','Commissioning lead article…');
   const hnTop=stories[0]||{};
@@ -435,34 +436,66 @@ Prose only — no bullets. Return ONLY valid JSON when asked, no markdown fences
     body:`<p>This story is trending at the top of the live intelligence feed with ${hnTop.score||0} engagement signals across the network. AXIOM is monitoring all subsequent developments in real time.</p><p>Filed by <strong>${hnTop.by||'unknown'}</strong> · Source: Hacker News Live Feed</p>`
   };
   try{
-    const raw=await hermes(SYS,`Write AXIOM lead article.Query:"${query}"
-Return ONLY JSON:{"headline":"12 words max","dek":"20 words","body":"<p>~70w</p><p>~70w</p><p>~60w</p>"}
-WEATHER:${wxCtx}
-STORIES:\n${stList}
-${ctxCtx?`REGION:${ctxCtx}`:''}`,750);
-    const parsed=safeJSON(raw,null);
-    if(parsed&&parsed.headline){lead=parsed;if(typeof lead.body==='string')lead.body=lead.body.replace(/\\n/g,'\n');}
+    const raw=await hermes(SYS,
+`You must respond with ONLY a JSON object. No text before or after. No markdown.
+Format: {"headline":"string","dek":"string","body":"string"}
+
+Write a lead article for AXIOM newspaper.
+Reader query: "${query}"
+Use this live data:
+WEATHER: ${wxCtx}
+TOP STORIES:
+${stList}
+${ctxCtx?`REGION: ${ctxCtx}`:''}
+
+Rules:
+- headline: max 12 words, present tense, powerful
+- dek: max 20 words, compelling subheadline
+- body: exactly 3 HTML paragraphs using <p> tags, each ~70 words, grounded in the data above`,750);
+    const cleaned=raw.replace(/<think>[\s\S]*?<\/think>/g,'').trim();
+    const jsonMatch=cleaned.match(/\{[\s\S]*\}/);
+    const parsed=jsonMatch?safeJSON(jsonMatch[0],null):null;
+    if(parsed&&parsed.headline){lead=parsed;if(typeof lead.body==='string')lead.body=lead.body.replace(/\n/g,'\n');}
+    else{log('warn','Lead JSON parse failed, using HN fallback');}
   }catch(e){log('err','Lead AI failed, HN fallback active');}
   log('ok',`Lead:"${(lead.headline||'').substring(0,42)}…"`);
 
   log('think','Commissioning secondary articles…');
   let sec3=[];
   try{
-    const raw2=await hermes(SYS,`Write 3 short secondary articles for AXIOM.
-Return ONLY JSON array:[{"kicker":"3 words","headline":"8 words","body":"55 words"},...]
-Stories:\n${stories.slice(1,4).map((s,i)=>`${i+1}."${s.title}"`).join('\n')}`,600);
-    sec3=safeJSON(raw2,[]);
+    const raw2=await hermes(SYS,
+`You must respond with ONLY a JSON array. No text before or after. No markdown.
+Format: [{"kicker":"string","headline":"string","body":"string"},...]
+
+Write exactly 3 short secondary newspaper articles for AXIOM.
+Each article covers one story below.
+- kicker: 3 words max
+- headline: 8 words max
+- body: exactly 55 words, one paragraph
+
+Stories to cover:
+${stories.slice(1,4).map((s,i)=>`${i+1}. "${s.title}"`).join('
+')}`,600);
+    const cleaned2=raw2.replace(/<think>[\s\S]*?<\/think>/g,'').trim();
+    const arrMatch=cleaned2.match(/\[[\s\S]*\]/);
+    sec3=arrMatch?safeJSON(arrMatch[0],[]):[];
   }catch(e){log('err','Secondary failed:'+e.message);}
 
   log('think','Synthesizing intelligence brief…');
   let brief='The oracle speaks in silence today.';
   try{
-    brief=await hermes(SYS,`Write AXIOM INTELLIGENCE BRIEF ~130 words answering:"${query}"
-Use <strong> for key findings,<em> for insights.Prose only.
-WEATHER:${wxCtx}
-STORIES:\n${stList}
-${ctxCtx?`CONTEXT:${ctxCtx}`:''}
-${quote?`WISDOM:"${quote.content}"—${quote.author}`:''}`,500);
+    brief=await hermes(SYS,
+`Write THE AXIOM INTELLIGENCE BRIEF. Respond with prose only — no JSON, no labels, no headers.
+Length: approximately 130 words.
+Topic: "${query}"
+Use <strong> tags for key findings. Use <em> tags for sharp insights.
+Weave together the following data into one cohesive editorial narrative:
+WEATHER: ${wxCtx}
+TOP STORIES:
+${stList}
+${ctxCtx?`CONTEXT: ${ctxCtx}`:''}
+${quote?`WISDOM: "${quote.content}" — ${quote.author}`:''}`,500);
+    brief=brief.replace(/<think>[\s\S]*?<\/think>/g,'').trim();
   }catch(e){log('err','Brief failed:'+e.message);}
 
   /* RENDER */
